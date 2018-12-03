@@ -17,14 +17,10 @@ function[VetX, VetY] = euler(a,b,m,y0)
         x = a + i * h;
         y = y + h * Fxy;
         Fxy = f(x,y);
-        disp(i, 'i = ');
-        disp(x, 'x = ');
-        disp(y, 'y = ');
-        disp(Fxy, 'Fxy = ');
-        disp(VetX, 'VetX = ');
-        disp(VetY, 'VetY = ');
-        disp('################')
+        printf('i = %f\t',i);
+        printf('x = %f\t',x);
+        printf('y = %f\t',y);
+        printf('Fxy = %f\n',Fxy);
         VetX(i+1) = x; VetY(i+1) = y; 
     end    
-    // 
 endfunction
