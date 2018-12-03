@@ -1,31 +1,30 @@
 
-function[result] = f(x)
+function[result] = f(x,y)
     //inserir a formula aqui yo
-    result= 3*x^2 + sqrt(x+1) * cos(x)^3 -2;
+    result= x - 2*y + 1
 endfunction
 
-function[Raiz, Iter, Erro] = pegaso(a,b,Toler,IterMax)
-    x=a; [Fa]= f(x); 
-    x=b; [Fb] = f(x);
-    printf('iter\ta\tb\tx\tFx\tdelta_x\n');
-    k = 0; x=b; Fx=Fb;
-    while 1
-        k = k+1; DeltaX = -Fx/(Fb-Fa) * (b - a);
-        x = x + DeltaX; Fx = f(x);
-        printf('%f\t',k);
-        printf('%f\t',a);
-        printf('%f\t',b);
-        printf('%f\t',x);
-        printf('%f\t',Fx);
-        printf('%f\n',DeltaX);
-        if ((abs(DeltaX)< Toler & abs(Fx) < Toler)| k>= IterMax)
-            break
-        end
-        if Fx * Fb < 0 a = b; Fa = Fb; else Fa = Fa * Fb / (Fb + Fx); end
-        b = x; Fb = Fx;
+
+//a = limite inferior
+//b = limite superior
+//m = numero de subintervalos
+//y = valor inicial
+function[VetX, VetY] = runge(a,b,m,y0)
+    h = (b-a)/m; xt = a; yt = y0;    
+    VetX(1) = xt; VetY(1) = yt;
+    printf('i\tx\t\t\y\n');
+    printf('%d\t',0);
+    printf('%f\t',xt);
+    printf('%f\n',yt);
+    for i=1:m
+        x = xt; y = yt; k1 = f(x,y);
+        x = xt + h/2; y = yt + h/2*k1; k2 = f(x,y);
+        y = yt + h/2 * k2; k3 = f(x,y);
+        x = xt + h; y = yt + h * k3; k4 = f(x,y);
+        xt = a + i * h; yt = yt + h/6 * (k1+2*(k2+k3) + k4);
+        printf('%d\t',i);
+        printf('%f\t',xt);
+        printf('%f\n',yt);
+        VetX(i+1) = xt; VetY(i+1) = yt;
     end
-    Raiz = x;
-    Iter = k;
-    Erro = abs(DeltaX) >= Toler | abs(Fx)>= Toler;
-    disp(Erro)
 endfunction
